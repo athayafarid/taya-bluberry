@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class DashboardController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('admin.pelanggan.dashboard');
+        $data['datauser'] = user::all();
+        return view('admin.user.index', $data);
     }
 
     /**
@@ -19,7 +21,7 @@ class DashboardController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.user.create');
     }
 
     /**
@@ -27,7 +29,15 @@ class DashboardController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //dd($request->all());
+        $data['name'] = $request->name;
+        $data['email'] = $request->email;
+        $data['password'] = $request->password;
+
+
+        User::create($data);
+
+        return redirect()->route('user.index')->with('create', 'Penambahan Data Berhasil!');
     }
 
     /**
